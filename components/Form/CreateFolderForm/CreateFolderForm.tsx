@@ -76,15 +76,9 @@ const CreateFolderForm = ({ folderData }: CreateFolderFormProps) => {
   };
   const onSubmit = (data: FieldValues) => {
     const { name, parentFolder } = data;
-    // if (parentFolder === "top") {
-    //   setValue("parentFolder", null);
-    // }
-    // const updatedData = {
-    //   ...data,
-    //   parentFolder: watch("parentFolder"),
-    // };
+    const formattedParentFolder = parentFolder === "" ? null : parentFolder;
 
-    createFolder(name, parentFolder, folderLevel);
+    createFolder(name, formattedParentFolder, folderLevel);
   };
 
   return (
