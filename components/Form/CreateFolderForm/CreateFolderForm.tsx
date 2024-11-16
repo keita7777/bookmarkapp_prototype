@@ -1,39 +1,91 @@
 "use client";
 
-// import { folderData } from "@/DummyData/folderData";
 import { useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { Folder } from "@/types/folderType";
+import { Folder, FolderWithRelation } from "@/types/folderType";
 import { foldersDummyData } from "@/DummyData/folderData";
 
 type CreateFolderFormProps = {
-  folderData: Folder[];
-  currentFolderId?: string;
+  folderData: FolderWithRelation[];
 };
 
-type createFolderFormData = {
-  name: string;
-  folder: string;
-};
-
-const CreateFolderForm = () => {
+const CreateFolderForm = ({ folderData }: CreateFolderFormProps) => {
   const router = useRouter();
   const {
     handleSubmit,
     register,
     setError,
     resetField,
+    setValue,
     watch,
     formState: { errors, isSubmitting },
   } = useForm({});
+
+  const [folderLevel, setFolderLevel] = useState<"ONE" | "TWO" | "THREE">(
+    "ONE"
+  );
+  const currentParentFolderValues = watch("parentFolder");
+
+  useEffect(() => {
+    const defineFolderLevel = () => {
+      const data = folderData.filter(
+        (folder) => folder.id === currentParentFolderValues
+      );
+      if (data[0]?.parent_relation.level === "ONE") {
+        setFolderLevel("TWO");
+      } else if (data[0]?.parent_relation.level === "TWO") {
+        setFolderLevel("THREE");
+      } else {
+        setError("root", {
+          message: "このフォルダ以下には作成できません",
+        });
+      }
+    };
+    if (currentParentFolderValues === "") {
+      setFolderLevel("ONE");
+    } else {
+      defineFolderLevel();
+    }
+  }, [currentParentFolderValues]);
+
+  const createFolder = async (
+    name: string,
+    // userId: string,
+    parentFolder: string | null,
+    folderLevel: "ONE" | "TWO" | "THREE"
+  ) => {
+    const response = await fetch(`http://localhost:3000/api/folder`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        userId: "f5a12336-c5d6-4b58-a549-b8f4be0db8b1",
+        parentFolder,
+        folderLevel,
+      }),
+    });
+  };
 
   const handleCancel = (e: any) => {
     e.preventDefault();
     router.back();
     router.refresh();
   };
-  const onSubmit = (data: FieldValues) => {};
+  const onSubmit = (data: FieldValues) => {
+    const { name, parentFolder } = data;
+    // if (parentFolder === "top") {
+    //   setValue("parentFolder", null);
+    // }
+    // const updatedData = {
+    //   ...data,
+    //   parentFolder: watch("parentFolder"),
+    // };
+
+    createFolder(name, parentFolder, folderLevel);
+  };
 
   return (
     <form
@@ -58,10 +110,10 @@ const CreateFolderForm = () => {
           className="border border-black rounded-md p-2"
           {...register("parentFolder")}
         >
-          <option value="ONE">指定しない</option>
-          {foldersDummyData &&
-            foldersDummyData
-              // .filter((folder) => folder.parent_relation.level !== "THREE")
+          <option value="">指定しない</option>
+          {folderData &&
+            folderData
+              .filter((folder) => folder.parent_relation.level !== "THREE")
               .map((folder) => (
                 <option key={folder.id} value={folder.id.toString()}>
                   {folder.name}

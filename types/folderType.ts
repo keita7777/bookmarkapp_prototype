@@ -1,3 +1,7 @@
+import { Folder_relation, Folders } from "@prisma/client";
+
+export type FolderWithRelation = Folders & { parent_relation: Folder_relation };
+
 // Level Enum
 export enum Level {
   ONE = "ONE",
