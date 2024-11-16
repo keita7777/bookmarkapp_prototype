@@ -79,6 +79,8 @@ const CreateFolderForm = ({ folderData }: CreateFolderFormProps) => {
     const formattedParentFolder = parentFolder === "" ? null : parentFolder;
 
     createFolder(name, formattedParentFolder, folderLevel);
+    router.push("/");
+    router.refresh();
   };
 
   return (
