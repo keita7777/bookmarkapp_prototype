@@ -29,8 +29,6 @@ const FolderItem = ({
   const folderPath = path.split("/")[1];
   const { id, name } = folder;
 
-  console.log("folder");
-
   return (
     <div className="flex items-center">
       {folder.parent_relation.parent_folder !== null && (
