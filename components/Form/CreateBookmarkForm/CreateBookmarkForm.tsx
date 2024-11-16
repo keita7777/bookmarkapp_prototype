@@ -2,7 +2,7 @@
 
 // import { folderData } from "@/DummyData/folderData";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { IoSend } from "react-icons/io5";
 import testImage from "@/DummyData/images/test-image.png";
 import { useForm } from "react-hook-form";
@@ -49,9 +49,14 @@ const CreateBookmarkForm = ({ folderData }: CreateBookmarkFormProps) => {
     handleSubmit,
     register,
     setError,
+    setValue,
     resetField,
     formState: { errors, isSubmitting },
   } = useForm();
+
+  // クエリパラメータを取得
+  const searchParams = useSearchParams();
+  const currentFolderId = searchParams.get("folderId");
 
   const handleLevel1Change = (e: ChangeEvent<HTMLSelectElement>) => {
     // console.log(e.target.value);
