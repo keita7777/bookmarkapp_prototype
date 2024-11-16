@@ -17,6 +17,7 @@ type CreateBookmarkFormProps = {
 
 const CreateBookmarkForm = ({ folderData }: CreateBookmarkFormProps) => {
   const [url, setUrl] = useState("");
+  const [isUrlSubmit, setIsUrlSubmit] = useState(false);
   const [urlData, setUrlData] = useState({
     title: "",
     image: "",
@@ -30,8 +31,20 @@ const CreateBookmarkForm = ({ folderData }: CreateBookmarkFormProps) => {
 
   return (
     <div className="w-11/12 bg-white px-20 py-16 flex flex-col gap-6">
-      <UrlSubmitForm url={url} setUrl={setUrl} setUrlData={setUrlData} />
-      <BookmarkSubmitForm urlData={urlData} folderData={folderData} />
+      <UrlSubmitForm
+        url={url}
+        setUrl={setUrl}
+        setUrlData={setUrlData}
+        setIsUrlSubmit={setIsUrlSubmit}
+      />
+      {isUrlSubmit && (
+        <BookmarkSubmitForm
+          url={url}
+          urlData={urlData}
+          folderData={folderData}
+          currentFolderId={currentFolderId}
+        />
+      )}
     </div>
   );
 };

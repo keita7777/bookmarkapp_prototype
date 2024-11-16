@@ -15,9 +15,15 @@ type UrlSubmitFormProps = {
       description: string;
     }>
   >;
+  setIsUrlSubmit: Dispatch<SetStateAction<boolean>>;
 };
 
-const UrlSubmitForm = ({ url, setUrl, setUrlData }: UrlSubmitFormProps) => {
+const UrlSubmitForm = ({
+  url,
+  setUrl,
+  setUrlData,
+  setIsUrlSubmit,
+}: UrlSubmitFormProps) => {
   const router = useRouter();
 
   const {
@@ -43,6 +49,7 @@ const UrlSubmitForm = ({ url, setUrl, setUrlData }: UrlSubmitFormProps) => {
       const data = await getUrlInfo(url);
       setUrlData(data);
     }
+    setIsUrlSubmit(true);
   };
 
   const onSubmit = () => {};
@@ -51,6 +58,7 @@ const UrlSubmitForm = ({ url, setUrl, setUrlData }: UrlSubmitFormProps) => {
     <form onSubmit={handleUrlSubmit} className="bg-white flex gap-4">
       <input
         type="text"
+        placeholder="URLを入力してください"
         className="border border-black rounded-md p-2 flex-1"
         onChange={(e) => setUrl(e.target.value)}
       />
