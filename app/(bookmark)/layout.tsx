@@ -6,9 +6,9 @@ export default function BookmarkLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex">
+    <div className="flex flex-col sm:flex-row">
       <Header />
-      <main>{children}</main>
+      <main className="flex-1">{children}</main>
     </div>
   );
 }

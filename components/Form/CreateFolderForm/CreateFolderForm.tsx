@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { Folder } from "@/types/folderType";
+import { foldersDummyData } from "@/DummyData/folderData";
 
 type CreateFolderFormProps = {
   folderData: Folder[];
@@ -37,7 +38,7 @@ const CreateFolderForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-2/3 bg-white px-20 py-16 flex flex-col gap-6"
+      className="w-full bg-white px-20 py-16 flex flex-col gap-6"
     >
       <div className="flex flex-col gap-2">
         <label htmlFor="name" className="text-xl font-bold">
@@ -58,14 +59,14 @@ const CreateFolderForm = () => {
           {...register("parentFolder")}
         >
           <option value="ONE">指定しない</option>
-          {/* {folderData &&
-              folderData
-                // .filter((folder) => folder.parent_relation.level !== "THREE")
-                .map((folder) => (
-                  <option key={folder.id} value={folder.id.toString()}>
-                    {folder.name}
-                  </option>
-                ))} */}
+          {foldersDummyData &&
+            foldersDummyData
+              // .filter((folder) => folder.parent_relation.level !== "THREE")
+              .map((folder) => (
+                <option key={folder.id} value={folder.id.toString()}>
+                  {folder.name}
+                </option>
+              ))}
         </select>
       </div>
       <div className="flex gap-6 justify-center items-center">
