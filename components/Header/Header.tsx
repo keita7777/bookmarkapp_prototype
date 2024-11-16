@@ -2,9 +2,9 @@
 
 import { FaFolder, FaSearch, FaRegUserCircle } from "react-icons/fa";
 import FolderMenu from "./FolderMenu/FolderMenu";
-import SearchMenu from "../SearchMenu/SearchMenu";
-import { useEffect, useState } from "react";
 import ProfileMenu from "./ProfileMenu/ProfileMenu";
+import SearchMenu from "./SearchMenu/SearchMenu";
+import { useEffect, useState } from "react";
 
 const Header = () => {
   const [openHeaderMenu, setOpenHeaderMenu] = useState("folder");
