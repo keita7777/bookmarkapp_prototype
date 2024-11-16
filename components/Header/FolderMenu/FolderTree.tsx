@@ -1,19 +1,19 @@
-import { Folder } from "@/types/folderType";
+import { Folder, FolderWithRelation } from "@/types/folderType";
 import FolderItem from "./FolderItem";
 
 const FolderTree = ({
-  foldersDummyData,
+  folders,
   parentId = null,
   openFolders,
   toggleFolder,
 }: {
-  foldersDummyData: Folder[];
+  folders: FolderWithRelation[];
   parentId?: string | null;
   openFolders: Record<string, boolean>;
   toggleFolder: (folderId: string) => void;
 }) => {
-  return foldersDummyData
-    .filter((folder) => folder.folderRelations.parent_folder === parentId)
+  return folders
+    .filter((folder) => folder.parent_relation.parent_folder === parentId)
     .map((folder) => (
       <li key={folder.id} className="flex flex-col gap-5">
         <FolderItem
@@ -21,10 +21,10 @@ const FolderTree = ({
           isSubFolderVisible={!!openFolders[folder.id]}
           toggleFolder={() => toggleFolder(folder.id)}
         />
-        {folder.folderRelations.hasChild && openFolders[folder.id] && (
+        {folder.parent_relation.hasChild && openFolders[folder.id] && (
           <ul className="ml-6 flex flex-col gap-5">
             <FolderTree
-              foldersDummyData={foldersDummyData}
+              folders={folders}
               parentId={folder.id}
               openFolders={openFolders}
               toggleFolder={toggleFolder}

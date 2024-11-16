@@ -1,15 +1,19 @@
 import { OpenMenuProvider } from "@/context/OpenMenuContext";
 import FolderTree from "./FolderTree";
 import { foldersDummyData } from "@/DummyData/folderData";
-import { FoldersDummyData } from "@/types/folderType";
+import { FoldersDummyData, FolderWithRelation } from "@/types/folderType";
 import { useState } from "react";
 import Link from "next/link";
 import { FaPlus } from "react-icons/fa";
 import { usePathname } from "next/navigation";
 
-const FolderMenu = () => {
+type HeaderNavProps = {
+  folders: FolderWithRelation[];
+};
+
+const FolderMenu = ({ folders }: HeaderNavProps) => {
   // ダミーデータなので一旦asアサーションで定義、あとで修正
-  const folderData = foldersDummyData as FoldersDummyData;
+  // const folderData = foldersDummyData as FoldersDummyData;
 
   // 個別のフォルダツリーを開く処理
   const [openFolders, setOpenFolders] = useState<Record<string, boolean>>({});
@@ -41,7 +45,7 @@ const FolderMenu = () => {
         </div>
         <ul className="flex flex-col gap-5">
           <FolderTree
-            foldersDummyData={folderData}
+            folders={folders}
             openFolders={openFolders}
             toggleFolder={toggleFolder}
           />

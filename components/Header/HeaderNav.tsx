@@ -5,8 +5,13 @@ import FolderMenu from "./FolderMenu/FolderMenu";
 import ProfileMenu from "./ProfileMenu/ProfileMenu";
 import SearchMenu from "./SearchMenu/SearchMenu";
 import { useEffect, useState } from "react";
+import { FolderWithRelation } from "@/types/folderType";
 
-const HeaderNav = () => {
+type HeaderNavProps = {
+  folders: FolderWithRelation[];
+};
+
+const HeaderNav = ({ folders }: HeaderNavProps) => {
   const [openHeaderMenu, setOpenHeaderMenu] = useState("folder");
   const [isMobile, setIsMobile] = useState(false);
 
@@ -71,7 +76,7 @@ const HeaderNav = () => {
         </nav>
       </div>
       <div className="w-full sm:ml-4 absolute sm:static left-0 top-full bg-gray-300 sm:bg-transparent">
-        {openHeaderMenu === "folder" && <FolderMenu />}
+        {openHeaderMenu === "folder" && <FolderMenu folders={folders} />}
         {openHeaderMenu === "search" && <SearchMenu />}
         {openHeaderMenu === "profile" && <ProfileMenu />}
       </div>
