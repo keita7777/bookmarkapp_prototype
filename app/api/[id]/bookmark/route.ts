@@ -50,3 +50,22 @@ export const PUT = async (
     return NextResponse.json({ message: "更新失敗", error }, { status: 500 });
   }
 };
+
+export const DELETE = async (
+  req: Request,
+  { params }: { params: { id: string } }
+) => {
+  try {
+    await prisma.bookmarks.delete({
+      where: {
+        id: params.id,
+      },
+    });
+
+    return NextResponse.json({ message: "削除完了" }, { status: 200 });
+  } catch (error) {
+    console.log(error);
+
+    return NextResponse.json({ message: "削除失敗", error }, { status: 500 });
+  }
+};

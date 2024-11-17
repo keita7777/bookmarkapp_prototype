@@ -36,7 +36,7 @@ model Bookmarks {
 model Bookmark_memo {
   id       String    @id @map("bookmark_id")
   memo     String?
-  bookmark Bookmarks @relation("BookmarkMemo", fields: [id], references: [id])
+  bookmark Bookmarks @relation("BookmarkMemo", fields: [id], references: [id], onDelete: Cascade)
 }
 
 model Folders {

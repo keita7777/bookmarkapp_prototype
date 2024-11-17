@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import BookmarkDeleteButton from "./BookmarkDeleteButton";
 
 type BookmarkButtonsProps = {
   id: string;
@@ -18,7 +19,7 @@ const BookmarkButtons = ({ id }: BookmarkButtonsProps) => {
         編集
       </Link>
       <button
-        onClick={() => setIsDeleteClick((prev) => !prev)}
+        onClick={() => setIsDeleteClick(true)}
         className="w-36 text-center border border-black rounded-md bg-red-600 text-white text-xl py-1"
       >
         削除
@@ -30,9 +31,7 @@ const BookmarkButtons = ({ id }: BookmarkButtonsProps) => {
             本当に削除しますか？
           </p>
           <div className="flex justify-center items-center gap-3">
-            <button className="w-36 text-center border border-black rounded-md bg-red-600 text-white text-xl py-1">
-              削除する
-            </button>
+            <BookmarkDeleteButton id={id} setIsDeleteClick={setIsDeleteClick} />
             <button
               onClick={() => setIsDeleteClick(false)}
               className="w-36 text-center border border-black rounded-md bg-white text-xl py-1"
