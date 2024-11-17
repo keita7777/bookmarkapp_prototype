@@ -1,10 +1,10 @@
-import BookmarkButtons from "@/components/Bookmark/BookmarkButtons";
 import BookmarkList from "@/components/Bookmark/BookmarkList";
+import BookmarkToolbar from "@/components/Bookmark/BookmarkToolbar";
 
 export default function FolderPage({ params }: { params: { id: string } }) {
   return (
     <>
-      <BookmarkButtons folderId={params.id} />
+      <BookmarkToolbar folderId={params.id} />
       <BookmarkList folderId={params.id} />
     </>
   );

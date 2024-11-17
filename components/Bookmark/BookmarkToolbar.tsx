@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { FaPlus } from "react-icons/fa";
 
-type BookmarkButtonsProps = {
+type BookmarkToolbarProps = {
   folderId?: string;
 };
 
-const BookmarkButtons = ({ folderId }: BookmarkButtonsProps) => {
+const BookmarkToolbar = ({ folderId }: BookmarkToolbarProps) => {
   return (
     <div className="mb-5 flex flex-col xl:flex-row justify-between">
       <div>
@@ -44,4 +44,4 @@ const BookmarkButtons = ({ folderId }: BookmarkButtonsProps) => {
     </div>
   );
 };
-export default BookmarkButtons;
+export default BookmarkToolbar;
