@@ -58,6 +58,7 @@ const UrlSubmitForm = ({
         type="text"
         placeholder="URLを入力してください"
         className="border border-black rounded-md p-2 flex-1"
+        defaultValue={url}
         onChange={(e) => setUrl(e.target.value)}
       />
       <button type="submit" className="bg-gray-400 px-4 rounded-md">

@@ -4,6 +4,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import testImage from "@/DummyData/images/test-image.png";
 import { FolderWithRelation } from "@/types/folderType";
 import { useRouter, useSearchParams } from "next/navigation";
+import { BookmarkWithMemo } from "@/types/bookmarkType";
 
 type BookmarkSubmitFormProps = {
   urlData?: {
@@ -14,12 +15,14 @@ type BookmarkSubmitFormProps = {
   };
   folderData: FolderWithRelation[];
   url: string;
+  bookmarkData: BookmarkWithMemo;
 };
 
 const BookmarkSubmitForm = ({
   urlData,
   folderData,
   url,
+  bookmarkData,
 }: BookmarkSubmitFormProps) => {
   const router = useRouter();
   const [isReady, setIsReady] = useState(false);
@@ -200,7 +203,7 @@ const BookmarkSubmitForm = ({
           <input
             type="text"
             className="border border-black rounded-md p-2"
-            defaultValue={urlData?.title || ""}
+            defaultValue={bookmarkData?.title || urlData?.title || ""}
             {...register("title")}
           />
           <label htmlFor="" className="text-xl font-bold">
@@ -209,7 +212,9 @@ const BookmarkSubmitForm = ({
           <textarea
             rows={5}
             className="border border-black rounded-md p-2"
-            defaultValue={urlData?.description || ""}
+            defaultValue={
+              bookmarkData?.description || urlData?.description || ""
+            }
             {...register("description")}
           />
         </div>
@@ -317,6 +322,7 @@ const BookmarkSubmitForm = ({
         <textarea
           rows={5}
           className="border border-black rounded-md p-2"
+          defaultValue={bookmarkData?.memo?.memo || ""}
           {...register("memo")}
         />
       </div>

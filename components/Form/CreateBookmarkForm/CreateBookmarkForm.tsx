@@ -10,17 +10,21 @@ import { Folders } from "@prisma/client";
 import { FolderWithRelation } from "@/types/folderType";
 import UrlSubmitForm from "./UrlSubmitForm";
 import BookmarkSubmitForm from "./BookmarkSubmitForm";
+import { BookmarkWithMemo } from "@/types/bookmarkType";
 
 type CreateBookmarkFormProps = {
   folderData: FolderWithRelation[];
   bookmarkId?: string;
+  bookmarkData: BookmarkWithMemo;
 };
 
 const CreateBookmarkForm = ({
   folderData,
   bookmarkId,
+  bookmarkData,
 }: CreateBookmarkFormProps) => {
-  const [url, setUrl] = useState("");
+  // 編集の場合は初期値にブックマークのURLを設定
+  const [url, setUrl] = useState(bookmarkData?.url || "");
   const [isUrlSubmit, setIsUrlSubmit] = useState(false);
   const [urlData, setUrlData] = useState({
     title: "",
@@ -46,12 +50,13 @@ const CreateBookmarkForm = ({
         setUrlData={handleUrlSubmit}
         setIsUrlSubmit={setIsUrlSubmit}
       />
-      {isUrlSubmit && (
+      {(isUrlSubmit || bookmarkData) && (
         <BookmarkSubmitForm
           key={bookmarkKey}
           url={url}
           urlData={urlData}
           folderData={folderData}
+          bookmarkData={bookmarkData}
         />
       )}
     </div>
