@@ -1,11 +1,11 @@
 import Image from "next/image";
 import testImage from "@/DummyData/images/test-image.png";
 import Link from "next/link";
-import { bookmarkType } from "@/types/bookmarkType";
+import { bookmarkType, BookmarkWithMemo } from "@/types/bookmarkType";
 
 type BoomarkCardProps = {
-  bookmark: bookmarkType;
-  folderId?: number;
+  bookmark: BookmarkWithMemo;
+  folderId?: string;
 };
 
 const BoomarkCard = ({ bookmark, folderId }: BoomarkCardProps) => {

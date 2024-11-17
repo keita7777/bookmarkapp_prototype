@@ -5,7 +5,7 @@ export default function FolderPage({ params }: { params: { id: string } }) {
   return (
     <>
       <BookmarkButtons folderId={params.id} />
-      <BookmarkList />
+      <BookmarkList folderId={params.id} />
     </>
   );
 }

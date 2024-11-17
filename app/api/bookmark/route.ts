@@ -1,9 +1,15 @@
 import prisma from "@/utils/db";
 import { NextResponse } from "next/server";
 
-export const GET = async () => {
+export const GET = async (req: Request) => {
+  const { searchParams } = new URL(req.url);
+  const folderId = searchParams.get("folderId");
+
+  // console.log(folderId);
+
   try {
     const bookmarks = await prisma.bookmarks.findMany({
+      where: folderId ? { folder_id: folderId } : undefined,
       include: {
         memo: true,
       },
