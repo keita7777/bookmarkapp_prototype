@@ -2,6 +2,7 @@ import Image from "next/image";
 import testImage from "@/DummyData/images/test-image.png";
 import Link from "next/link";
 import { bookmarkType, BookmarkWithMemo } from "@/types/bookmarkType";
+import BookmarkButtons from "./BookmarkButtons";
 
 type BoomarkCardProps = {
   bookmark: BookmarkWithMemo;
@@ -10,7 +11,7 @@ type BoomarkCardProps = {
 
 const BoomarkCard = ({ bookmark, folderId }: BoomarkCardProps) => {
   return (
-    <li className="flex flex-col border border-black rounded-md p-3">
+    <li className="flex flex-col border border-black rounded-md p-3 relative">
       <div className="flex flex-col lg:flex-row">
         <a
           href={bookmark.url}
@@ -35,17 +36,8 @@ const BoomarkCard = ({ bookmark, folderId }: BoomarkCardProps) => {
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center gap-3 mt-3 w-full">
-        <Link
-          className="w-24 text-center border border-black rounded-md"
-          href={`/edit-bookmark/${bookmark.id}`}
-        >
-          編集
-        </Link>
-        <button className="w-24 text-center border border-black rounded-md">
-          削除
-        </button>
-      </div>
+
+      <BookmarkButtons id={bookmark.id} />
     </li>
   );
 };
