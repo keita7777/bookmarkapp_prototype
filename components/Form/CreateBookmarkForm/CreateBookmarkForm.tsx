@@ -25,16 +25,26 @@ const CreateBookmarkForm = ({ folderData }: CreateBookmarkFormProps) => {
     description: "",
   });
 
+  // URLを入力しなおした時の対策
+  const [bookmarkKey, setBookmarkKey] = useState(0);
+
+  const handleUrlSubmit = (newUrlData: typeof urlData) => {
+    setUrlData(newUrlData);
+    setIsUrlSubmit(true);
+    setBookmarkKey((prev) => prev + 1);
+  };
+
   return (
     <div className="w-11/12 bg-white px-20 py-16 flex flex-col gap-6">
       <UrlSubmitForm
         url={url}
         setUrl={setUrl}
-        setUrlData={setUrlData}
+        setUrlData={handleUrlSubmit}
         setIsUrlSubmit={setIsUrlSubmit}
       />
       {isUrlSubmit && (
         <BookmarkSubmitForm
+          key={bookmarkKey}
           url={url}
           urlData={urlData}
           folderData={folderData}

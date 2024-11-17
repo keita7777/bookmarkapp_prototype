@@ -7,14 +7,12 @@ import { IoSend } from "react-icons/io5";
 type UrlSubmitFormProps = {
   url: string;
   setUrl: Dispatch<SetStateAction<string>>;
-  setUrlData: Dispatch<
-    SetStateAction<{
-      title: string;
-      image: string;
-      url: string;
-      description: string;
-    }>
-  >;
+  setUrlData: (newUrlData: {
+    title: string;
+    image: string;
+    url: string;
+    description: string;
+  }) => void;
   setIsUrlSubmit: Dispatch<SetStateAction<boolean>>;
 };
 
