@@ -23,3 +23,30 @@ export const GET = async (
     return NextResponse.json({ message: "取得失敗", error }, { status: 500 });
   }
 };
+
+export const PUT = async (
+  req: Request,
+  { params }: { params: { id: string } }
+) => {
+  const data = await req.json();
+
+  try {
+    await prisma.bookmarks.update({
+      where: {
+        id: params.id,
+      },
+      data: {
+        user_id: data.userId,
+        folder_id: data.folder_id,
+        url: data.url,
+        title: data.title,
+        description: data.description,
+        image: data.image,
+      },
+    });
+
+    return NextResponse.json({ message: "更新完了" }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ message: "更新失敗", error }, { status: 500 });
+  }
+};

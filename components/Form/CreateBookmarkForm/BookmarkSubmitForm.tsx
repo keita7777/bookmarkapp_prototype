@@ -51,60 +51,116 @@ const BookmarkSubmitForm = ({
   // console.log("レベル2：" + folder_level2_defaultValue);
   // console.log("レベル3：" + folder_level3_defaultValue);
 
-  useEffect(() => {
-    // クエリパラメータがない場合も準備完了にする
-    if (!currentFolderId) {
-      setIsReady(true);
-      return;
-    }
-
-    const data = folderData.filter((item) => item.id === currentFolderId);
-    // 対象データが見つからない場合も準備完了にする
-    if (!data) {
-      setIsReady(true);
-      return;
-    }
-    const currentFolderData = data[0];
-
-    if (currentFolderData.parent_relation.level === "THREE") {
-      // console.log("レベル3のフォルダ");
-
-      const folder3 = currentFolderData.id;
-      const folder2 = currentFolderData.parent_relation.parent_folder;
-      const folder1Data = folderData.filter(
-        (item) => item.parent_relation.id === folder2
+  if (bookmarkData) {
+    // 編集の場合
+    useEffect(() => {
+      const data = folderData.filter(
+        (item) => item.id === bookmarkData.folder_id
       );
-      const folder1 = folder1Data[0].parent_relation.parent_folder;
 
-      // console.log("レベル3：" + folder3);
-      // console.log("レベル2：" + folder2);
-      // console.log("レベル1：" + folder1);
+      // 対象データが見つからない場合準備完了にする
+      if (!data) {
+        setIsReady(true);
+        return;
+      }
 
-      setFolder_level3_defaultValue(folder3);
-      setFolder_level2_defaultValue(folder2);
-      setFolder_level1_defaultValue(folder1);
+      const currentFolderData = data[0];
 
-      setFolder_level3(folder3);
-      setFolder_level2(folder2);
-      setFolder_level1(folder1);
-    } else if (currentFolderData.parent_relation.level === "TWO") {
-      // console.log("レベル2のフォルダ");
-      const folder2 = currentFolderData.id;
-      const folder1 = currentFolderData.parent_relation.id;
-      setFolder_level2_defaultValue(folder2);
-      setFolder_level1_defaultValue(folder1);
+      console.log(currentFolderData.parent_relation.level);
 
-      setFolder_level2(folder2);
-      setFolder_level1(folder1);
-    } else {
-      // console.log("レベル1のフォルダ");
-      const folder1 = currentFolderData.id;
-      setFolder_level1_defaultValue(folder1);
+      if (currentFolderData.parent_relation.level === "THREE") {
+        const folder3 = currentFolderData.id;
+        const folder2 = currentFolderData.parent_relation.parent_folder;
+        const folder1Data = folderData.filter(
+          (item) => item.parent_relation.id === folder2
+        );
+        const folder1 = folder1Data[0].parent_relation.parent_folder;
 
-      setFolder_level1(folder1);
-    }
-    setIsReady(true);
-  }, []);
+        // console.log("レベル3：" + folder3);
+        // console.log("レベル2：" + folder2);
+        // console.log("レベル1：" + folder1);
+
+        setFolder_level3_defaultValue(folder3);
+        setFolder_level2_defaultValue(folder2);
+        setFolder_level1_defaultValue(folder1);
+
+        setFolder_level3(folder3);
+        setFolder_level2(folder2);
+        setFolder_level1(folder1);
+      } else if (currentFolderData.parent_relation.level === "TWO") {
+        const folder2 = currentFolderData.id;
+        const folder1 = currentFolderData.parent_relation.id;
+        setFolder_level2_defaultValue(folder2);
+        setFolder_level1_defaultValue(folder1);
+
+        setFolder_level2(folder2);
+        setFolder_level1(folder1);
+      } else {
+        const folder1 = currentFolderData.id;
+        setFolder_level1_defaultValue(folder1);
+
+        setFolder_level1(folder1);
+      }
+
+      setIsReady(true);
+    }, []);
+  } else {
+    // 新規作成の場合
+    useEffect(() => {
+      // クエリパラメータがない場合準備完了にする
+      if (!currentFolderId) {
+        setIsReady(true);
+        return;
+      }
+
+      const data = folderData.filter((item) => item.id === currentFolderId);
+      // 対象データが見つからない場合準備完了にする
+      if (!data) {
+        setIsReady(true);
+        return;
+      }
+      const currentFolderData = data[0];
+
+      if (currentFolderData.parent_relation.level === "THREE") {
+        // console.log("レベル3のフォルダ");
+
+        const folder3 = currentFolderData.id;
+        const folder2 = currentFolderData.parent_relation.parent_folder;
+        const folder1Data = folderData.filter(
+          (item) => item.parent_relation.id === folder2
+        );
+        const folder1 = folder1Data[0].parent_relation.parent_folder;
+
+        // console.log("レベル3：" + folder3);
+        // console.log("レベル2：" + folder2);
+        // console.log("レベル1：" + folder1);
+
+        setFolder_level3_defaultValue(folder3);
+        setFolder_level2_defaultValue(folder2);
+        setFolder_level1_defaultValue(folder1);
+
+        setFolder_level3(folder3);
+        setFolder_level2(folder2);
+        setFolder_level1(folder1);
+      } else if (currentFolderData.parent_relation.level === "TWO") {
+        // console.log("レベル2のフォルダ");
+        const folder2 = currentFolderData.id;
+        const folder1 = currentFolderData.parent_relation.id;
+        setFolder_level2_defaultValue(folder2);
+        setFolder_level1_defaultValue(folder1);
+
+        setFolder_level2(folder2);
+        setFolder_level1(folder1);
+      } else {
+        // console.log("レベル1のフォルダ");
+        const folder1 = currentFolderData.id;
+        setFolder_level1_defaultValue(folder1);
+
+        setFolder_level1(folder1);
+      }
+      setIsReady(true);
+    }, []);
+  }
 
   const {
     handleSubmit,
@@ -158,6 +214,34 @@ const BookmarkSubmitForm = ({
     });
   };
 
+  const updateBookmark = async (
+    url: string,
+    title: string,
+    description: string,
+    folder_id: string,
+    image: string | null | undefined,
+    memo: string | null
+  ) => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/${bookmarkData.id}/bookmark`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: "f5a12336-c5d6-4b58-a549-b8f4be0db8b1",
+          folder_id,
+          url,
+          title,
+          description,
+          image,
+          memo,
+        }),
+      }
+    );
+  };
+
   const onSubmit = (data: FieldValues) => {
     if (!folder_level1) {
       setError("root", {
@@ -169,14 +253,25 @@ const BookmarkSubmitForm = ({
 
     const { title, description, selectedFolder, memo } = data;
 
-    createBookmark(
-      url,
-      title,
-      description,
-      selectedFolder,
-      urlData?.image,
-      memo
-    );
+    if (bookmarkData) {
+      updateBookmark(
+        url,
+        title,
+        description,
+        selectedFolder,
+        urlData?.image,
+        memo
+      );
+    } else {
+      createBookmark(
+        url,
+        title,
+        description,
+        selectedFolder,
+        urlData?.image,
+        memo
+      );
+    }
   };
 
   // ローディング中の表示 必要か？
@@ -328,7 +423,7 @@ const BookmarkSubmitForm = ({
       </div>
       <div className="flex gap-6 justify-center items-center">
         <button className="rounded-md bg-gray-300 w-48 text-xl font-bold py-1">
-          作成
+          {bookmarkData ? "更新" : "作成"}
         </button>
         <button
           onClick={handleCancel}
