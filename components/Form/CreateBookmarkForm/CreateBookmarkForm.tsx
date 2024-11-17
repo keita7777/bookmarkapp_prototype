@@ -25,10 +25,6 @@ const CreateBookmarkForm = ({ folderData }: CreateBookmarkFormProps) => {
     description: "",
   });
 
-  // クエリパラメータを取得
-  const searchParams = useSearchParams();
-  const currentFolderId = searchParams.get("folderId");
-
   return (
     <div className="w-11/12 bg-white px-20 py-16 flex flex-col gap-6">
       <UrlSubmitForm
@@ -42,7 +38,6 @@ const CreateBookmarkForm = ({ folderData }: CreateBookmarkFormProps) => {
           url={url}
           urlData={urlData}
           folderData={folderData}
-          currentFolderId={currentFolderId}
         />
       )}
     </div>

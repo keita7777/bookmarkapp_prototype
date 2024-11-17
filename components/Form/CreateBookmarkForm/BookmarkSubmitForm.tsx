@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import testImage from "@/DummyData/images/test-image.png";
 import { FolderWithRelation } from "@/types/folderType";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type BookmarkSubmitFormProps = {
   urlData?: {
@@ -13,23 +13,96 @@ type BookmarkSubmitFormProps = {
     description: string;
   };
   folderData: FolderWithRelation[];
-  currentFolderId?: string | null;
   url: string;
 };
 
 const BookmarkSubmitForm = ({
   urlData,
   folderData,
-  currentFolderId,
   url,
 }: BookmarkSubmitFormProps) => {
   const router = useRouter();
+  const [isReady, setIsReady] = useState(false);
   const [folder_level1, setFolder_level1] = useState<string | null>(null);
   const [folder_level2, setFolder_level2] = useState<string | null>(null);
   const [folder_level3, setFolder_level3] = useState<string | null>(null);
   const [folderErrorMessage, setFolderErrorMessage] = useState<string | null>(
     null
   );
+
+  const [folder_level1_defaultValue, setFolder_level1_defaultValue] = useState<
+    string | null
+  >(null);
+  const [folder_level2_defaultValue, setFolder_level2_defaultValue] = useState<
+    string | null
+  >(null);
+  const [folder_level3_defaultValue, setFolder_level3_defaultValue] = useState<
+    string | null
+  >(null);
+
+  // クエリパラメータを取得
+  const searchParams = useSearchParams();
+  const currentFolderId = searchParams.get("folderId");
+
+  // console.log("レベル1：" + folder_level1_defaultValue);
+  // console.log("レベル2：" + folder_level2_defaultValue);
+  // console.log("レベル3：" + folder_level3_defaultValue);
+
+  useEffect(() => {
+    // クエリパラメータがない場合も準備完了にする
+    if (!currentFolderId) {
+      setIsReady(true);
+      return;
+    }
+
+    const data = folderData.filter((item) => item.id === currentFolderId);
+    // 対象データが見つからない場合も準備完了にする
+    if (!data) {
+      setIsReady(true);
+      return;
+    }
+    const currentFolderData = data[0];
+
+    if (currentFolderData.parent_relation.level === "THREE") {
+      // console.log("レベル3のフォルダ");
+
+      const folder3 = currentFolderData.id;
+      const folder2 = currentFolderData.parent_relation.parent_folder;
+      const folder1Data = folderData.filter(
+        (item) => item.parent_relation.id === folder2
+      );
+      const folder1 = folder1Data[0].parent_relation.parent_folder;
+
+      // console.log("レベル3：" + folder3);
+      // console.log("レベル2：" + folder2);
+      // console.log("レベル1：" + folder1);
+
+      setFolder_level3_defaultValue(folder3);
+      setFolder_level2_defaultValue(folder2);
+      setFolder_level1_defaultValue(folder1);
+
+      setFolder_level3(folder3);
+      setFolder_level2(folder2);
+      setFolder_level1(folder1);
+    } else if (currentFolderData.parent_relation.level === "TWO") {
+      // console.log("レベル2のフォルダ");
+      const folder2 = currentFolderData.id;
+      const folder1 = currentFolderData.parent_relation.id;
+      setFolder_level2_defaultValue(folder2);
+      setFolder_level1_defaultValue(folder1);
+
+      setFolder_level2(folder2);
+      setFolder_level1(folder1);
+    } else {
+      // console.log("レベル1のフォルダ");
+      const folder1 = currentFolderData.id;
+      setFolder_level1_defaultValue(folder1);
+
+      setFolder_level1(folder1);
+    }
+    setIsReady(true);
+  }, []);
+
   const {
     handleSubmit,
     register,
@@ -68,6 +141,10 @@ const BookmarkSubmitForm = ({
     console.log(data, url);
   };
 
+  if (!isReady) {
+    return <div>Loading...</div>; // ローディング中の表示
+  }
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -101,6 +178,7 @@ const BookmarkSubmitForm = ({
           />
         </div>
       </div>
+
       <div className="flex gap-4 p-6 border border-black rounded-md">
         <div className="flex flex-col gap-2 w-1/3">
           <label htmlFor="" className="text-xl font-bold">
@@ -115,6 +193,9 @@ const BookmarkSubmitForm = ({
               setFolder_level2(null);
               setFolder_level3(null);
             }}
+            defaultValue={
+              folder_level1_defaultValue ? folder_level1_defaultValue : ""
+            }
           >
             <option disabled selected>
               フォルダを選択してください
@@ -128,7 +209,7 @@ const BookmarkSubmitForm = ({
               ))}
           </select>
         </div>
-        {folder_level1 && (
+        {folder_level1 || folder_level2_defaultValue ? (
           <div className="flex flex-col gap-2 w-1/3">
             <label htmlFor="" className="text-xl font-bold">
               第2階層
@@ -141,6 +222,9 @@ const BookmarkSubmitForm = ({
                 setFolder_level2(e.target.value);
                 setFolder_level3(null);
               }}
+              defaultValue={
+                folder_level2_defaultValue ? folder_level2_defaultValue : ""
+              }
             >
               <option disabled selected>
                 フォルダを選択してください
@@ -157,7 +241,7 @@ const BookmarkSubmitForm = ({
                 ))}
             </select>
           </div>
-        )}
+        ) : null}
         {folder_level2 && (
           <div className="flex flex-col gap-2 w-1/3">
             <label htmlFor="" className="text-xl font-bold">
@@ -168,6 +252,9 @@ const BookmarkSubmitForm = ({
               id=""
               className="border border-black rounded-md p-2"
               onChange={(e) => setFolder_level3(e.target.value)}
+              defaultValue={
+                folder_level3_defaultValue ? folder_level3_defaultValue : ""
+              }
             >
               <option disabled selected>
                 フォルダを選択してください
@@ -186,6 +273,7 @@ const BookmarkSubmitForm = ({
           </div>
         )}
       </div>
+
       <div className="flex flex-col gap-2">
         <label htmlFor="" className="text-xl font-bold">
           メモ
