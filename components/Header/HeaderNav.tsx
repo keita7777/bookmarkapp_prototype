@@ -76,9 +76,15 @@ const HeaderNav = ({ folders }: HeaderNavProps) => {
         </nav>
       </div>
       <div className="w-full sm:ml-4 absolute sm:static left-0 top-full bg-gray-300 sm:bg-transparent">
-        {openHeaderMenu === "folder" && <FolderMenu folders={folders} />}
-        {openHeaderMenu === "search" && <SearchMenu />}
-        {openHeaderMenu === "profile" && <ProfileMenu />}
+        <div className={`${openHeaderMenu === "folder" ? "block" : "hidden"}`}>
+          <FolderMenu folders={folders} />
+        </div>
+        <div className={`${openHeaderMenu === "search" ? "block" : "hidden"}`}>
+          <SearchMenu />
+        </div>
+        <div className={`${openHeaderMenu === "profile" ? "block" : "hidden"}`}>
+          <ProfileMenu />
+        </div>
       </div>
     </div>
   );
