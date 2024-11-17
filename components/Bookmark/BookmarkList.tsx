@@ -11,7 +11,7 @@ type BookmarkListProps = {
 const BookmarkList = async ({ folderId }: BookmarkListProps) => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmark${
-      folderId ? `?folderId=${folderId}` : ""
+      folderId ? `/${folderId}` : ""
     }`,
     {
       method: "GET",
@@ -19,19 +19,24 @@ const BookmarkList = async ({ folderId }: BookmarkListProps) => {
     }
   );
 
+  if (!res.ok) return null;
+
   const data = await res.json();
   const bookmarks: BookmarkWithMemo[] = data.bookmarks;
+
+  // console.log(folderId);
 
   return (
     <div className="">
       <ul className="flex flex-col gap-4">
-        {bookmarks.map((bookmark) => (
-          <BoomarkCard
-            key={bookmark.id}
-            bookmark={bookmark}
-            folderId={folderId}
-          />
-        ))}
+        {bookmarks &&
+          bookmarks.map((bookmark) => (
+            <BoomarkCard
+              key={bookmark.id}
+              bookmark={bookmark}
+              folderId={folderId}
+            />
+          ))}
       </ul>
     </div>
   );
