@@ -30,13 +30,13 @@ model Bookmarks {
   updated_at  DateTime       @updatedAt
   user        Users          @relation(fields: [user_id], references: [id])
   folder      Folders        @relation(fields: [folder_id], references: [id])
-  memo        Bookmark_memo?
+  memo        Bookmark_memo? @relation("BookmarkMemo")
 }
 
 model Bookmark_memo {
   id       String    @id @map("bookmark_id")
   memo     String?
-  bookmark Bookmarks @relation(fields: [id], references: [id])
+  bookmark Bookmarks @relation("BookmarkMemo", fields: [id], references: [id])
 }
 
 model Folders {
