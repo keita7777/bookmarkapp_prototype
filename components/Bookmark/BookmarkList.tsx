@@ -10,7 +10,7 @@ type BookmarkListProps = {
 
 const BookmarkList = async ({ folderId }: BookmarkListProps) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmark${
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmarks${
       folderId ? `/${folderId}` : ""
     }`,
     {

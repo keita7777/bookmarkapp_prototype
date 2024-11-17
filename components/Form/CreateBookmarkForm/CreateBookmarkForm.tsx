@@ -13,9 +13,13 @@ import BookmarkSubmitForm from "./BookmarkSubmitForm";
 
 type CreateBookmarkFormProps = {
   folderData: FolderWithRelation[];
+  bookmarkId?: string;
 };
 
-const CreateBookmarkForm = ({ folderData }: CreateBookmarkFormProps) => {
+const CreateBookmarkForm = ({
+  folderData,
+  bookmarkId,
+}: CreateBookmarkFormProps) => {
   const [url, setUrl] = useState("");
   const [isUrlSubmit, setIsUrlSubmit] = useState(false);
   const [urlData, setUrlData] = useState({

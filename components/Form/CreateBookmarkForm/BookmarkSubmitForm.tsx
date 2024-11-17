@@ -138,7 +138,7 @@ const BookmarkSubmitForm = ({
     image: string | null | undefined,
     memo: string | null
   ) => {
-    const response = await fetch(`http://localhost:3000/api/bookmark`, {
+    const response = await fetch(`http://localhost:3000/api/bookmarks`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

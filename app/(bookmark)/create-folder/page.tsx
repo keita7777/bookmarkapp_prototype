@@ -1,7 +1,7 @@
 import CreateFolderForm from "@/components/Form/CreateFolderForm/CreateFolderForm";
 
 export default async function CreateFolderPage() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/folder`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/folders`, {
     method: "GET",
     cache: "no-store",
   });

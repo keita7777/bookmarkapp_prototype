@@ -2,7 +2,7 @@ import Link from "next/link";
 import HeaderNav from "./HeaderNav";
 
 const Header = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/folder`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/folders`, {
     method: "GET",
     cache: "no-store",
   });
