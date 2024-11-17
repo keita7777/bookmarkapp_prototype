@@ -130,6 +130,31 @@ const BookmarkSubmitForm = ({
     router.refresh();
   };
 
+  const createBookmark = async (
+    url: string,
+    title: string,
+    description: string,
+    folder_id: string,
+    image: string | null | undefined,
+    memo: string | null
+  ) => {
+    const response = await fetch(`http://localhost:3000/api/bookmark`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: "f5a12336-c5d6-4b58-a549-b8f4be0db8b1",
+        folder_id,
+        url,
+        title,
+        description,
+        image,
+        memo,
+      }),
+    });
+  };
+
   const onSubmit = (data: FieldValues) => {
     if (!folder_level1) {
       setError("root", {
@@ -138,11 +163,22 @@ const BookmarkSubmitForm = ({
       return;
     }
     setFolderErrorMessage(null);
-    console.log(data, url);
+
+    const { title, description, selectedFolder, memo } = data;
+
+    createBookmark(
+      url,
+      title,
+      description,
+      selectedFolder,
+      urlData?.image,
+      memo
+    );
   };
 
+  // ローディング中の表示 必要か？
   if (!isReady) {
-    return <div>Loading...</div>; // ローディング中の表示
+    return <div>Loading...</div>;
   }
 
   return (
