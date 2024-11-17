@@ -233,7 +233,7 @@ const BookmarkSubmitForm = ({
               folder_level1_defaultValue ? folder_level1_defaultValue : ""
             }
           >
-            <option disabled selected>
+            <option value="" disabled selected>
               フォルダを選択してください
             </option>
             {folderData
