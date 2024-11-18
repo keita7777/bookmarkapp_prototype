@@ -16,7 +16,7 @@ const FolderSettingButton = ({ id }: { id: string | null }) => {
       >
         <BsThreeDots />
       </button>
-      {openMenuId === id && <FolderSettingMenu />}
+      {openMenuId === id && <FolderSettingMenu id={id} />}
     </>
   );
 };

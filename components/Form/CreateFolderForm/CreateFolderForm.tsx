@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { Folder, FolderWithRelation } from "@/types/folderType";
@@ -12,6 +12,9 @@ type CreateFolderFormProps = {
 
 const CreateFolderForm = ({ folderData }: CreateFolderFormProps) => {
   const router = useRouter();
+  const path = usePathname();
+  const folderPath = path.split("/")[2];
+
   const {
     handleSubmit,
     register,
@@ -20,7 +23,41 @@ const CreateFolderForm = ({ folderData }: CreateFolderFormProps) => {
     setValue,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm({});
+  } = useForm({
+    defaultValues: {
+      name: "",
+      parentFolder: "",
+    },
+  });
+
+  // 編集の場合ここから
+  // フォルダ名と親フォルダの初期値を設定
+  const [parentFolderId, setParentFolderId] = useState<string | null>(null);
+  const [folderName, setFolderName] = useState<string | null>(null);
+  const getParentFolder = () => {
+    const result = folderData.filter((item) => item.id === folderPath);
+
+    if (result.length <= 0) return null;
+
+    setParentFolderId(result[0].parent_relation.parent_folder);
+    setFolderName(result[0].name);
+  };
+
+  if (folderPath) {
+    useEffect(() => {
+      getParentFolder();
+    }, []);
+
+    useEffect(() => {
+      if (parentFolderId !== null) {
+        setValue("parentFolder", parentFolderId);
+      }
+      if (folderName !== null) {
+        setValue("name", folderName);
+      }
+    }, [parentFolderId, folderName, setValue]);
+  }
+  // 編集の場合ここまで
 
   const [folderLevel, setFolderLevel] = useState<"ONE" | "TWO" | "THREE">(
     "ONE"
@@ -104,6 +141,7 @@ const CreateFolderForm = ({ folderData }: CreateFolderFormProps) => {
         </label>
         <select
           className="border border-black rounded-md p-2"
+          // defaultValue="75f2efe8-e3c2-441a-9190-27c94d740f47"
           {...register("parentFolder")}
         >
           <option value="">指定しない</option>
@@ -111,7 +149,7 @@ const CreateFolderForm = ({ folderData }: CreateFolderFormProps) => {
             folderData
               .filter((folder) => folder.parent_relation.level !== "THREE")
               .map((folder) => (
-                <option key={folder.id} value={folder.id.toString()}>
+                <option key={folder.id} value={folder.id}>
                   {folder.name}
                 </option>
               ))}
@@ -122,7 +160,7 @@ const CreateFolderForm = ({ folderData }: CreateFolderFormProps) => {
           type="submit"
           className="rounded-md bg-gray-300 w-48 text-xl font-bold py-1"
         >
-          作成
+          {folderPath ? "更新" : "作成"}
         </button>
         <button
           type="button"
