@@ -1,7 +1,5 @@
-import { bookmarkDummyData } from "@/DummyData/bookmarkData";
 import BoomarkCard from "./BoomarkCard";
 
-import { Bookmarks } from "@prisma/client";
 import { BookmarkWithMemo } from "@/types/bookmarkType";
 
 type BookmarkListProps = {

@@ -3,8 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { Folder, FolderWithRelation } from "@/types/folderType";
-import { foldersDummyData } from "@/DummyData/folderData";
+import { FolderWithRelation } from "@/types/folderType";
 
 type CreateFolderFormProps = {
   folderData: FolderWithRelation[];
@@ -19,10 +18,10 @@ const CreateFolderForm = ({ folderData }: CreateFolderFormProps) => {
     handleSubmit,
     register,
     setError,
-    resetField,
+    // resetField,
     setValue,
     watch,
-    formState: { errors, isSubmitting },
+    // formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
       name: "",
@@ -43,20 +42,22 @@ const CreateFolderForm = ({ folderData }: CreateFolderFormProps) => {
     setFolderName(result[0].name);
   };
 
-  if (folderPath) {
-    useEffect(() => {
+  useEffect(() => {
+    if (folderPath) {
       getParentFolder();
-    }, []);
+    }
+  }, []);
 
-    useEffect(() => {
+  useEffect(() => {
+    if (folderPath) {
       if (parentFolderId !== null) {
         setValue("parentFolder", parentFolderId);
       }
       if (folderName !== null) {
         setValue("name", folderName);
       }
-    }, [parentFolderId, folderName, setValue]);
-  }
+    }
+  }, [parentFolderId, folderName, setValue]);
   // 編集の場合ここまで
 
   const [folderLevel, setFolderLevel] = useState<"ONE" | "TWO" | "THREE">(
@@ -92,7 +93,7 @@ const CreateFolderForm = ({ folderData }: CreateFolderFormProps) => {
     parentFolder: string | null,
     folderLevel: "ONE" | "TWO" | "THREE"
   ) => {
-    const response = await fetch(`http://localhost:3000/api/folders`, {
+    await fetch(`http://localhost:3000/api/folders`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -112,7 +113,7 @@ const CreateFolderForm = ({ folderData }: CreateFolderFormProps) => {
     parentFolder: string | null,
     folderLevel: "ONE" | "TWO" | "THREE"
   ) => {
-    const response = await fetch(
+    await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/${folderPath}/folder`,
       {
         method: "PUT",
@@ -129,7 +130,7 @@ const CreateFolderForm = ({ folderData }: CreateFolderFormProps) => {
     );
   };
 
-  const handleCancel = (e: any) => {
+  const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     router.back();
     router.refresh();

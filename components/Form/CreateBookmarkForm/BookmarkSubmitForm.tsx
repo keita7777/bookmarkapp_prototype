@@ -15,7 +15,7 @@ type BookmarkSubmitFormProps = {
   };
   folderData: FolderWithRelation[];
   url: string;
-  bookmarkData: BookmarkWithMemo;
+  bookmarkData?: BookmarkWithMemo;
 };
 
 const BookmarkSubmitForm = ({
@@ -29,9 +29,6 @@ const BookmarkSubmitForm = ({
   const [folder_level1, setFolder_level1] = useState<string | null>(null);
   const [folder_level2, setFolder_level2] = useState<string | null>(null);
   const [folder_level3, setFolder_level3] = useState<string | null>(null);
-  const [folderErrorMessage, setFolderErrorMessage] = useState<string | null>(
-    null
-  );
 
   const [folder_level1_defaultValue, setFolder_level1_defaultValue] = useState<
     string | null
@@ -51,9 +48,9 @@ const BookmarkSubmitForm = ({
   // console.log("レベル2：" + folder_level2_defaultValue);
   // console.log("レベル3：" + folder_level3_defaultValue);
 
-  if (bookmarkData) {
-    // 編集の場合
-    useEffect(() => {
+  // 編集の場合
+  useEffect(() => {
+    if (bookmarkData) {
       const data = folderData.filter(
         (item) => item.id === bookmarkData.folder_id
       );
@@ -103,10 +100,12 @@ const BookmarkSubmitForm = ({
       }
 
       setIsReady(true);
-    }, []);
-  } else {
-    // 新規作成の場合
-    useEffect(() => {
+    }
+  }, []);
+
+  // 新規作成の場合
+  useEffect(() => {
+    if (!bookmarkData) {
       // クエリパラメータがない場合準備完了にする
       if (!currentFolderId) {
         setIsReady(true);
@@ -159,16 +158,15 @@ const BookmarkSubmitForm = ({
         setFolder_level1(folder1);
       }
       setIsReady(true);
-    }, []);
-  }
+    }
+  }, []);
 
   const {
     handleSubmit,
     register,
     setError,
     setValue,
-    resetField,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm();
 
   useEffect(() => {
@@ -183,7 +181,7 @@ const BookmarkSubmitForm = ({
     }
   }, [folder_level1, folder_level2, folder_level3, setValue]);
 
-  const handleCancel = (e: any) => {
+  const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     router.back();
     router.refresh();
@@ -197,7 +195,7 @@ const BookmarkSubmitForm = ({
     image: string | null | undefined,
     memo: string | null
   ) => {
-    const response = await fetch(`http://localhost:3000/api/bookmarks`, {
+    await fetch(`http://localhost:3000/api/bookmarks`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -222,8 +220,8 @@ const BookmarkSubmitForm = ({
     image: string | null | undefined,
     memo: string | null
   ) => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/${bookmarkData.id}/bookmark`,
+    await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/${bookmarkData?.id}/bookmark`,
       {
         method: "PUT",
         headers: {
@@ -249,7 +247,6 @@ const BookmarkSubmitForm = ({
       });
       return;
     }
-    setFolderErrorMessage(null);
 
     const { title, description, selectedFolder, memo } = data;
 
@@ -272,6 +269,8 @@ const BookmarkSubmitForm = ({
         memo
       );
     }
+    router.push("/");
+    router.refresh();
   };
 
   // ローディング中の表示 必要か？

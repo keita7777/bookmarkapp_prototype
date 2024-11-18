@@ -1,7 +1,6 @@
 import Image from "next/image";
 import testImage from "@/DummyData/images/test-image.png";
-import Link from "next/link";
-import { bookmarkType, BookmarkWithMemo } from "@/types/bookmarkType";
+import { BookmarkWithMemo } from "@/types/bookmarkType";
 import BookmarkButtons from "./BookmarkButtons";
 
 type BoomarkCardProps = {
@@ -9,7 +8,7 @@ type BoomarkCardProps = {
   folderId?: string;
 };
 
-const BoomarkCard = ({ bookmark, folderId }: BoomarkCardProps) => {
+const BoomarkCard = ({ bookmark }: BoomarkCardProps) => {
   return (
     <li className="flex flex-col border border-black rounded-md p-3 relative">
       <div className="flex flex-col lg:flex-row">

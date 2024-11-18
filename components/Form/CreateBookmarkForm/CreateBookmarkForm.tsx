@@ -1,12 +1,6 @@
 "use client";
 
-// import { folderData } from "@/DummyData/folderData";
-
-import { useRouter, useSearchParams } from "next/navigation";
-
-import { useForm } from "react-hook-form";
-import { ChangeEvent, useEffect, useState } from "react";
-import { Folders } from "@prisma/client";
+import { useState } from "react";
 import { FolderWithRelation } from "@/types/folderType";
 import UrlSubmitForm from "./UrlSubmitForm";
 import BookmarkSubmitForm from "./BookmarkSubmitForm";
@@ -15,12 +9,12 @@ import { BookmarkWithMemo } from "@/types/bookmarkType";
 type CreateBookmarkFormProps = {
   folderData: FolderWithRelation[];
   bookmarkId?: string;
-  bookmarkData: BookmarkWithMemo;
+  bookmarkData?: BookmarkWithMemo;
 };
 
 const CreateBookmarkForm = ({
   folderData,
-  bookmarkId,
+  // bookmarkId,
   bookmarkData,
 }: CreateBookmarkFormProps) => {
   // 編集の場合は初期値にブックマークのURLを設定

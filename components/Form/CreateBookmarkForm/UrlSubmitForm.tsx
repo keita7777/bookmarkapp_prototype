@@ -1,6 +1,5 @@
 import { getUrlInfo } from "@/utils/linkpreview";
-import { useRouter } from "next/navigation";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, FormEvent, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import { IoSend } from "react-icons/io5";
 
@@ -22,25 +21,17 @@ const UrlSubmitForm = ({
   setUrlData,
   setIsUrlSubmit,
 }: UrlSubmitFormProps) => {
-  const router = useRouter();
-
   const {
-    handleSubmit,
-    register,
-    setError,
-    setValue,
-    resetField,
-    formState: { errors, isSubmitting },
+    // handleSubmit,
+    // register,
+    // setError,
+    // setValue,
+    // resetField,
+    // formState: { errors, isSubmitting },
   } = useForm();
 
-  const handleCancel = (e: any) => {
-    e.preventDefault();
-    router.back();
-    router.refresh();
-  };
-
   // URLからサイトのデータを取得
-  const handleUrlSubmit = async (e: any) => {
+  const handleUrlSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (url) {
@@ -50,7 +41,7 @@ const UrlSubmitForm = ({
     setIsUrlSubmit(true);
   };
 
-  const onSubmit = () => {};
+  // const onSubmit = () => {};
 
   return (
     <form onSubmit={handleUrlSubmit} className="bg-white flex gap-4">

@@ -1,4 +1,4 @@
-import { Folder, FolderWithRelation } from "@/types/folderType";
+import { FolderWithRelation } from "@/types/folderType";
 import FolderItem from "./FolderItem";
 
 const FolderTree = ({

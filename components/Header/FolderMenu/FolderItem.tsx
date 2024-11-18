@@ -1,14 +1,11 @@
 import Link from "next/link";
 
-import { IoIosArrowDown } from "react-icons/io";
 import { GrBottomCorner } from "react-icons/gr";
 
-import { Folder, FolderWithRelation } from "@/types/folderType";
+import { FolderWithRelation } from "@/types/folderType";
 import { usePathname } from "next/navigation";
 import FolderOpenButton from "./FolderOpenButton";
-import { Dispatch, SetStateAction } from "react";
 import FolderSettingButton from "./FolderSettingButton";
-import { Folders } from "@prisma/client";
 
 const FolderItem = ({
   folder,
@@ -42,7 +39,7 @@ const FolderItem = ({
         <div className="flex items-center flex-1 h-full">
           {folder.parent_relation.hasChild && (
             <FolderOpenButton
-              hasChild={folder.parent_relation.hasChild}
+              // hasChild={folder.parent_relation.hasChild}
               isSubFolderVisible={isSubFolderVisible}
               setIsSubFolderVisible={toggleFolder}
             />

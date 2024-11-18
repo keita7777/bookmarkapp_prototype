@@ -22,10 +22,8 @@ export const POST = async (req: Request) => {
   try {
     const data = await req.json();
 
-    console.log(data);
-
     // bookmarksテーブルにデータ挿入
-    const res = await prisma.bookmarks.create({
+    await prisma.bookmarks.create({
       data: {
         user_id: data.userId,
         folder_id: data.folder_id,
@@ -37,17 +35,15 @@ export const POST = async (req: Request) => {
     });
 
     // bookmark_memoテーブルにデータ挿入
-    const res2 = await prisma.bookmark_memo.create({
-      data: {
-        id: res.id,
-        memo: data.memo,
-      },
-    });
+    // const res2 = await prisma.bookmark_memo.create({
+    //   data: {
+    //     id: res.id,
+    //     memo: data.memo,
+    //   },
+    // });
 
     return NextResponse.json({ message: "投稿完了" }, { status: 200 });
-  } catch (error: any) {
-    console.log(error.message);
-
+  } catch (error) {
     return NextResponse.json({ message: "投稿失敗", error }, { status: 500 });
   }
 };

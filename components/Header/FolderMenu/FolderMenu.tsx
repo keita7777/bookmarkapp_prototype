@@ -1,7 +1,6 @@
 import { OpenMenuProvider } from "@/context/OpenMenuContext";
 import FolderTree from "./FolderTree";
-import { foldersDummyData } from "@/DummyData/folderData";
-import { FoldersDummyData, FolderWithRelation } from "@/types/folderType";
+import { FolderWithRelation } from "@/types/folderType";
 import { useState } from "react";
 import Link from "next/link";
 import { FaPlus } from "react-icons/fa";
