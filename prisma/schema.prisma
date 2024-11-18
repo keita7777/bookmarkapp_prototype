@@ -55,7 +55,7 @@ model Folder_relation {
   parent_folder String?
   hasChild      Boolean
   level         Level
-  folder        Folders @relation("FolderToRelation", fields: [id], references: [id])
+  folder        Folders @relation("FolderToRelation", fields: [id], references: [id], onDelete: Cascade)
 }
 
 enum Level {
