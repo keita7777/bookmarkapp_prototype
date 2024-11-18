@@ -1,4 +1,5 @@
 import Header from "@/components/Header/Header";
+import { OpenMenuProvider } from "@/context/OpenMenuContext";
 
 export default function BookmarkLayout({
   children,
@@ -7,8 +8,10 @@ export default function BookmarkLayout({
 }>) {
   return (
     <div className="flex flex-col sm:flex-row">
-      <Header />
-      <main className="flex-1 p-4">{children}</main>
+      <OpenMenuProvider>
+        <Header />
+        <main className="flex-1 p-4">{children}</main>
+      </OpenMenuProvider>
     </div>
   );
 }

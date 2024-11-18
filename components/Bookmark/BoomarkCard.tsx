@@ -2,6 +2,7 @@ import Image from "next/image";
 import testImage from "@/DummyData/images/test-image.png";
 import { BookmarkWithMemo } from "@/types/bookmarkType";
 import BookmarkButtons from "./BookmarkButtons";
+import BoomarkSettingButton from "./BoomarkSettingButton";
 
 type BoomarkCardProps = {
   bookmark: BookmarkWithMemo;
@@ -23,7 +24,7 @@ const BoomarkCard = ({ bookmark }: BoomarkCardProps) => {
         <div className="flex flex-col gap-2 w-full lg:ml-5">
           <div className="flex justify-between relative">
             <h2 className="text-xl font-bold">{bookmark.title}</h2>
-            {/* <BoomarkSettingButton id={bookmark.id} /> */}
+            <BoomarkSettingButton id={bookmark.id} />
           </div>
 
           <p className="text-gray-600">{bookmark.description}</p>

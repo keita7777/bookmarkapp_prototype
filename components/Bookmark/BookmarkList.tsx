@@ -22,8 +22,6 @@ const BookmarkList = async ({ folderId }: BookmarkListProps) => {
   const data = await res.json();
   const bookmarks: BookmarkWithMemo[] = data.bookmarks;
 
-  // console.log(folderId);
-
   return (
     <div className="">
       <ul className="flex flex-col gap-4">

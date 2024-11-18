@@ -27,30 +27,28 @@ const FolderMenu = ({ folders }: HeaderNavProps) => {
   const folderPath = path.split("/")[1];
 
   return (
-    <OpenMenuProvider>
-      <div className="w-full p-2 sm:p-0">
-        <div className="bg-white rounded-md mb-4 border-2 border-black">
-          <Link
-            href={
-              folderPath
-                ? `/create-folder?folderId=${folderPath}`
-                : "/create-folder"
-            }
-            className="px-4 py-2 font-bold flex justify-center items-center"
-          >
-            <FaPlus className="mr-4" />
-            新規フォルダ作成
-          </Link>
-        </div>
-        <ul className="flex flex-col gap-5">
-          <FolderTree
-            folders={folders}
-            openFolders={openFolders}
-            toggleFolder={toggleFolder}
-          />
-        </ul>
+    <div className="w-full p-2 sm:p-0">
+      <div className="bg-white rounded-md mb-4 border-2 border-black">
+        <Link
+          href={
+            folderPath
+              ? `/create-folder?folderId=${folderPath}`
+              : "/create-folder"
+          }
+          className="px-4 py-2 font-bold flex justify-center items-center"
+        >
+          <FaPlus className="mr-4" />
+          新規フォルダ作成
+        </Link>
       </div>
-    </OpenMenuProvider>
+      <ul className="flex flex-col gap-5">
+        <FolderTree
+          folders={folders}
+          openFolders={openFolders}
+          toggleFolder={toggleFolder}
+        />
+      </ul>
+    </div>
   );
 };
 export default FolderMenu;
