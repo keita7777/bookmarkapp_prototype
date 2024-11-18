@@ -93,7 +93,7 @@ const CreateFolderForm = ({ folderData }: CreateFolderFormProps) => {
     parentFolder: string | null,
     folderLevel: "ONE" | "TWO" | "THREE"
   ) => {
-    await fetch(`http://localhost:3000/api/folders`, {
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/folders`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

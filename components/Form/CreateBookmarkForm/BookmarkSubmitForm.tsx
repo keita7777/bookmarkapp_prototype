@@ -195,7 +195,7 @@ const BookmarkSubmitForm = ({
     image: string | null | undefined,
     memo: string | null
   ) => {
-    await fetch(`http://localhost:3000/api/bookmarks`, {
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmarks`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
