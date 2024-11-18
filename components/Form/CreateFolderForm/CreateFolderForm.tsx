@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { FolderWithRelation } from "@/types/folderType";
@@ -13,6 +13,10 @@ const CreateFolderForm = ({ folderData }: CreateFolderFormProps) => {
   const router = useRouter();
   const path = usePathname();
   const folderPath = path.split("/")[2];
+
+  // 個別のフォルダが選択された状態の場合、クエリパラメータを取得
+  const searchParams = useSearchParams();
+  const folderIdQuery = searchParams.get("folderId");
 
   const {
     handleSubmit,
@@ -33,7 +37,7 @@ const CreateFolderForm = ({ folderData }: CreateFolderFormProps) => {
   // フォルダ名と親フォルダの初期値を設定
   const [parentFolderId, setParentFolderId] = useState<string | null>(null);
   const [folderName, setFolderName] = useState<string | null>(null);
-  const getParentFolder = () => {
+  const getParentFolderEdit = () => {
     const result = folderData.filter((item) => item.id === folderPath);
 
     if (result.length <= 0) return null;
@@ -42,19 +46,38 @@ const CreateFolderForm = ({ folderData }: CreateFolderFormProps) => {
     setFolderName(result[0].name);
   };
 
+  // 個別のフォルダが選択された状態の場合の新規作成
+  const getParentFolderNewByFolder = () => {
+    const result = folderData.filter((item) => item.id === folderIdQuery);
+
+    if (result.length <= 0) return null;
+
+    setParentFolderId(result[0].parent_relation.parent_folder);
+  };
+
   useEffect(() => {
     if (folderPath) {
-      getParentFolder();
+      getParentFolderEdit();
+    } else if (folderIdQuery) {
+      getParentFolderNewByFolder();
     }
   }, []);
 
   useEffect(() => {
+    // 編集の場合
     if (folderPath) {
       if (parentFolderId !== null) {
         setValue("parentFolder", parentFolderId);
       }
       if (folderName !== null) {
         setValue("name", folderName);
+      }
+    }
+
+    // 個別のフォルダが選択された状態の場合の新規作成
+    if (folderIdQuery) {
+      if (folderIdQuery !== null) {
+        setValue("parentFolder", folderIdQuery);
       }
     }
   }, [parentFolderId, folderName, setValue]);
