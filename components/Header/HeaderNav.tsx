@@ -75,7 +75,7 @@ const HeaderNav = ({ folders }: HeaderNavProps) => {
           </ul>
         </nav>
       </div>
-      <div className="w-full sm:ml-4 absolute sm:static left-0 top-full bg-gray-300 sm:bg-transparent">
+      <div className="w-full sm:ml-4 absolute sm:static left-0 top-full bg-gray-300 sm:bg-transparent z-20">
         <div className={`${openHeaderMenu === "folder" ? "block" : "hidden"}`}>
           <FolderMenu folders={folders} />
         </div>
