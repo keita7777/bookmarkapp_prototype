@@ -106,16 +106,45 @@ const CreateFolderForm = ({ folderData }: CreateFolderFormProps) => {
     });
   };
 
+  const updateFolder = async (
+    name: string,
+    // userId: string,
+    parentFolder: string | null,
+    folderLevel: "ONE" | "TWO" | "THREE"
+  ) => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/${folderPath}/folder`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          userId: "f5a12336-c5d6-4b58-a549-b8f4be0db8b1",
+          parentFolder,
+          folderLevel,
+        }),
+      }
+    );
+  };
+
   const handleCancel = (e: any) => {
     e.preventDefault();
     router.back();
     router.refresh();
   };
+
   const onSubmit = (data: FieldValues) => {
     const { name, parentFolder } = data;
     const formattedParentFolder = parentFolder === "" ? null : parentFolder;
 
-    createFolder(name, formattedParentFolder, folderLevel);
+    if (folderPath) {
+      updateFolder(name, formattedParentFolder, folderLevel);
+    } else {
+      createFolder(name, formattedParentFolder, folderLevel);
+    }
+
     router.push("/");
     router.refresh();
   };
@@ -147,7 +176,13 @@ const CreateFolderForm = ({ folderData }: CreateFolderFormProps) => {
           <option value="">指定しない</option>
           {folderData &&
             folderData
-              .filter((folder) => folder.parent_relation.level !== "THREE")
+              .filter(
+                (folder) =>
+                  // 第3階層のフォルダ以下には作成できない
+                  folder.parent_relation.level !== "THREE" &&
+                  // 編集の場合、自身のフォルダは選択肢から除外
+                  folder.id !== folderPath
+              )
               .map((folder) => (
                 <option key={folder.id} value={folder.id}>
                   {folder.name}
